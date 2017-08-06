@@ -65,6 +65,42 @@ def query_data_range(f, begin=None, end=None, step=1):
     return ret 
 
 # ===================
+def big_user_uid_set(d):
+    vip_uid_lst = []
+    nor_uid_lst = []
+    
+    for i in d:
+        if i.get("moneys") >= big_user_limit:
+            vip_uid_lst.append(i.get("uid"))
+        else:
+            nor_uid_lst.append(i.get("uid")
+
+    print 'vip uid size=%s || normal uid size=%s' % (len(vip_uid_lst), len(nor_uid_lst))
+    return vip_uid_lst, nor_uid_lst
+            
+
+def pre_big_user_uid_by_week(weeks):
+    for week in weeks:
+        vip_uids , nor_uids = big_user_uid_set(week)
+
+
+def sum_recharger_by_uids_level(day, vip_uids):
+    total_vip_money = 0
+    total_vip_users = 0
+
+    total_nor_money = 0
+    total_nor_users = 0
+    
+    for i in day:
+        uid = i.get("uid")
+        if uid in vip_uids:
+            total_vip_money += i.get("money")
+            total_vip_users += 1
+        else:
+            total_vip_money += i.get("money")
+            total_nor_users += 1
+            
+        
 
 
 
@@ -75,7 +111,9 @@ if __name__ == '__main__':
         7)
     print '='*100
     print '='*100
-    query_data_range(query_by_day_date,
+    daily_data = query_data_range(query_by_day_date,
         '2017-07-01 00:00:00', 
         '2017-08-01 00:00:00', 
         1)
+
+
