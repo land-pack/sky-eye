@@ -26,15 +26,17 @@ def query_data_range(f, begin=None, end=None, step=1):
     end = str_to_datetime(end) if end else  datetime.today()
     day_del = (end - begin).days
     weeks, days = divmod(day_del, step)
+    print 'total weeks', weeks, 'left days', days
     week_to_data = {}
     for i in range(weeks):
         limit_date = begin + timedelta(days=step * i)
+        week_edge = str(limit_date).split(' ')[0]
         kwargs = {
             "limit_date":limit_date,
             "tomorrow":limit_date + timedelta(days=step * i),
         }
         result = f(**kwargs)
-        week_to_data.update({i:result})
+        week_to_data.update({week_edge:result})
 
     return week_to_data
 
@@ -57,7 +59,7 @@ def split_user_by_recharger_level(lst):
 def main():
     big_user_total_recharger_by_week = query_data_range(query_by_max_date,
         '2017-07-01 00:00:00', 
-        '2017-08-07 00:00:00', 
+        '2017-08-01 00:00:00', 
         7)
     d= split_user_by_recharger_level(big_user_total_recharger_by_week)
     return d
